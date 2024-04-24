@@ -14,17 +14,23 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 
 
 
-from django.urls import path
+
 
 def trigger_error(request):
     division_by_zero = 1 / 0
-    urlpatterns = [
-        path('admin/', admin.site.urls),
-        path('sentry-debug/', trigger_error)
-        ]
+urlpatterns = [
+    # Scieżka do panelu administracyjnego Django.
+    path('admin/', admin.site.urls),
+    # Scieżka do aplikacji 'ai_app', która zawiera własną konfigurację URL (ai_app.urls).
+    path('ai_app/', include('ai_app.urls')),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)  # Dodanie obsługi plików statycznych zgodnie z konfiguracją w settings.py
+
 
